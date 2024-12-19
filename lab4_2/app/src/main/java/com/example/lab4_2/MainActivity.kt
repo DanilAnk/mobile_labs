@@ -5,99 +5,61 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.lab4_2.databinding.ActivityMainBinding
 
-
-data class Question(val text: String, val isAnswerTrue: Boolean)
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var questionTextView: TextView
-    private lateinit var trueButton: Button
-    private lateinit var falseButton: Button
-    private lateinit var nextButton: Button
-
-    private var currentIndex = 0
-    private var correctAnswersCount = 0
-
-    private val questionBank = arrayOf(
-        Question("Столица Франции — Париж?", true),
-        Question("Сахара — это океан?", false),
-        Question("Россия — самая большая страна в мире?", true),
-        Question("Канада находится на юге от Соединенных Штатов?", false),
-        Question("Столица Японии — Токио?", true),
-    )
-
+    private lateinit var binding: ActivityMainBinding
+    private val quizViewModel: QuizViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-
-        questionTextView = findViewById(R.id.question_text_view)
-        trueButton = findViewById(R.id.true_button)
-        falseButton = findViewById(R.id.false_button)
-        nextButton = findViewById(R.id.next_button)
-
-        if (savedInstanceState != null) {
-            currentIndex = savedInstanceState.getInt("currentIndex", 0)
-            correctAnswersCount = savedInstanceState.getInt("correctAnswersCount", 0)
+        quizViewModel.currentQuestionText.observe(this) { question ->
+            binding.questionTextView.text = question
         }
 
-        updateQuestion()
-
-        trueButton.setOnClickListener {
-            checkAnswer(true)
+        binding.trueButton.setOnClickListener {
+            checkUserAnswer(true)
         }
 
-        falseButton.setOnClickListener {
-            checkAnswer(false)
+        binding.falseButton.setOnClickListener {
+            checkUserAnswer(false)
         }
 
-        nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
-            updateQuestion()
+        binding.nextButton.setOnClickListener {
+            quizViewModel.nextQuestion()
+
+            if (quizViewModel.getAnswersCount() == quizViewModel.questionBank.size - 1) {
+                binding.nextButton.isEnabled = false
+                binding.nextButton.visibility = View.INVISIBLE
+            } else {
+                binding.nextButton.isEnabled = true
+                binding.nextButton.visibility = View.VISIBLE
+            }
+
+            binding.trueButton.visibility = View.VISIBLE
+            binding.falseButton.visibility = View.VISIBLE
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("currentIndex", currentIndex)
-        outState.putInt("correctAnswersCount", correctAnswersCount)
-    }
-
-    private fun updateQuestion() {
-        val questionText = questionBank[currentIndex].text
-        questionTextView.text = questionText
-
-        if (currentIndex == questionBank.size - 1) {
-            nextButton.isEnabled = false
-            nextButton.visibility = View.INVISIBLE
-        } else {
-            nextButton.isEnabled = true
-            nextButton.visibility = View.VISIBLE
-        }
-
-        trueButton.visibility = View.VISIBLE
-        falseButton.visibility = View.VISIBLE
-    }
-
-    private fun checkAnswer(userPressedTrue: Boolean) {
-        val answerIsTrue = questionBank[currentIndex].isAnswerTrue
-        if (userPressedTrue == answerIsTrue) {
-            correctAnswersCount++
+    private fun checkUserAnswer(isTrue: Boolean) {
+        if (quizViewModel.checkAnswer(isTrue)) {
             Toast.makeText(this, "Правильный ответ!", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Не правильный ответ!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Неправильный ответ!", Toast.LENGTH_SHORT).show()
         }
+        binding.trueButton.visibility = View.INVISIBLE
+        binding.falseButton.visibility = View.INVISIBLE
 
-        trueButton.visibility = View.INVISIBLE
-        falseButton.visibility = View.INVISIBLE
-
-        if (currentIndex == questionBank.size - 1) {
-            Toast.makeText(this, "Правильных ответов: $correctAnswersCount", Toast.LENGTH_LONG).show()
+        if (quizViewModel.getAnswersCount() == quizViewModel.questionBank.size - 1) {
+            Toast.makeText(this, "Правильные ответы: ${quizViewModel.getCorrectAnswersCount()}", Toast.LENGTH_LONG).show()
         }
-
     }
 
 }
