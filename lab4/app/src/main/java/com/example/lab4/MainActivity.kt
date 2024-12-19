@@ -1,8 +1,10 @@
 package com.example.lab4
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 
@@ -68,13 +70,34 @@ class MainActivity : AppCompatActivity() {
         val questionText = questionBank[currentIndex].text
         questionTextView.text = questionText
 
+        if (currentIndex == questionBank.size - 1) {
+            nextButton.isEnabled = false
+            nextButton.visibility = View.INVISIBLE
+        } else {
+            nextButton.isEnabled = true
+            nextButton.visibility = View.VISIBLE
+        }
+
+        trueButton.visibility = View.VISIBLE
+        falseButton.visibility = View.VISIBLE
     }
 
     private fun checkAnswer(userPressedTrue: Boolean) {
         val answerIsTrue = questionBank[currentIndex].isAnswerTrue
         if (userPressedTrue == answerIsTrue) {
             correctAnswersCount++
+            Toast.makeText(this, "Правильный ответ!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Не правильный ответ!", Toast.LENGTH_SHORT).show()
+        }
+
+        trueButton.visibility = View.INVISIBLE
+        falseButton.visibility = View.INVISIBLE
+
+        if (currentIndex == questionBank.size - 1) {
+            Toast.makeText(this, "Правильных ответов: $correctAnswersCount", Toast.LENGTH_LONG).show()
         }
 
     }
+
 }
