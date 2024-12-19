@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/question_text_view"
-        android:layout_width="330dp"
-        android:layout_height="51dp"
+        android:layout_width="388dp"
+        android:layout_height="137dp"
         android:layout_marginTop="56dp"
         android:padding="16dp"
         android:textAlignment="center"
