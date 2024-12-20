@@ -15,10 +15,12 @@ class QuizViewModel : ViewModel() {
         Question("Столица Японии — Токио?", true),
     )
 
-    private var currentIndex = 0
+    var currentIndex = 0
     private var correctAnswersCount = 0
     private val _currentQuestionText = MutableLiveData<String>()
     val currentQuestionText: LiveData<String> get() = _currentQuestionText
+
+    private var cheatCount = 0
 
     init {
         updateQuestion()
@@ -48,5 +50,13 @@ class QuizViewModel : ViewModel() {
 
     fun getAnswersCount(): Int {
         return currentIndex
+    }
+
+    fun canCheat(): Boolean {
+        return cheatCount < 3
+    }
+
+    fun useCheat() {
+        if (canCheat()) cheatCount++
     }
 }
