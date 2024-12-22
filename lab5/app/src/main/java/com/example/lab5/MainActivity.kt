@@ -40,7 +40,10 @@ class MainActivity : AppCompatActivity() {
             val discount = discountSeekBar.progress
             val cost = calculateCost(hours, discount)
 
-
+            val intent = Intent(this, SecondActivity::class.java).apply {
+                putExtra("PAYMENT", cost)
+            }
+            startActivity(intent)
         }
     }
 
