@@ -1,36 +1,44 @@
-import android.content.Context
+package com.example.lab6
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lab6.R
-import java.io.Serializable
+import com.example.lab6.Violation
 
+class ViolationAdapter(
+    private var violations: List<Violation>,
+    private val onItemClick: (Violation) -> Unit
+) : RecyclerView.Adapter<ViolationAdapter.ViolationViewHolder>() {
 
-data class Violation(val title: String, val date: String, var isResolved: Boolean) : Serializable
+    class ViolationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val titleTextView: TextView = itemView.findViewById(R.id.violation_title)
+        val dateTextView: TextView = itemView.findViewById(R.id.violation_date)
 
-class ViolationAdapter(context: Context, private val violations: List<Violation>) :
-    ArrayAdapter<Violation>(context, 0, violations) {
+    }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        // Получаем или создаем элемент списка
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.violation_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViolationViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.violation_item, parent, false)
+        return ViolationViewHolder(view)
+    }
 
-        // Получаем текущую запись нарушения
+    override fun onBindViewHolder(holder: ViolationViewHolder, position: Int) {
         val violation = violations[position]
+        holder.titleTextView.text = violation.title
+        holder.dateTextView.text = violation.date
 
-        // Находим элементы интерфейса
-        val titleTextView = view.findViewById<TextView>(R.id.violation_title)
-        val dateTextView = view.findViewById<TextView>(R.id.violation_date)
-        val statusImageView = view.findViewById<ImageView>(R.id.violation_status_icon)
+        holder.itemView.setOnClickListener {
+            onItemClick(violation)
+        }
+    }
 
-        // Устанавливаем данные в элементы интерфейса
-        titleTextView.text = violation.title
-        dateTextView.text = violation.date
+    override fun getItemCount(): Int = violations.size
 
-
-        return view
+    fun updateData(newViolations: List<Violation>) {
+        violations = newViolations
+        notifyDataSetChanged()
     }
 }

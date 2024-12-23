@@ -32,11 +32,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ListView
-        android:id="@+id/violations_list"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/violations_recycler_view"
+        android:layout_width="400dp"
         android:layout_height="557dp"
         android:layout_below="@id/app_title"
+        android:layout_marginTop="16dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="81dp" />
 

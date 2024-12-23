@@ -1,6 +1,6 @@
 package com.example.lab6
 
-import Violation
+import com.example.lab6.Violation
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
@@ -8,6 +8,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class ViolationDetailActivity : AppCompatActivity() {
 
@@ -15,22 +17,29 @@ class ViolationDetailActivity : AppCompatActivity() {
     private lateinit var dateTextView: TextView
     private lateinit var resolvedCheckBox: CheckBox
     private lateinit var backButton: Button
-    private lateinit var selectSuspectButton: Button
+    private lateinit var deleteButton: Button
     private lateinit var sendReportButton: Button
+
+    private lateinit var dao: ViolationDao
+    private lateinit var violation: Violation
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_violation_detail)
 
+
         titleEditText = findViewById(R.id.violation_title_edit)
         dateTextView = findViewById(R.id.violation_date)
         resolvedCheckBox = findViewById(R.id.resolved_checkbox)
         backButton = findViewById(R.id.back_button)
-        selectSuspectButton = findViewById(R.id.select_suspect_button)
+        deleteButton = findViewById(R.id.delete_button)
         sendReportButton = findViewById(R.id.send_report_button)
 
-        val violation = intent.getSerializableExtra("violation") as Violation
 
+        violation = intent.getSerializableExtra("violation") as Violation
+
+        dao = AppDatabase.getDatabase(this).violationDao()
 
         titleEditText.setText(violation.title)
         dateTextView.text = violation.date
@@ -42,13 +51,20 @@ class ViolationDetailActivity : AppCompatActivity() {
         }
 
 
-        selectSuspectButton.setOnClickListener {
-            Toast.makeText(this, "Выберите подозреваемого", Toast.LENGTH_SHORT).show()
+        deleteButton.setOnClickListener {
+            lifecycleScope.launch {
+                dao.delete(violation)
+                finish()
+            }
         }
 
         sendReportButton.setOnClickListener {
-            Toast.makeText(this, "Отчёт отправлен", Toast.LENGTH_SHORT).show()
-            finish()
+            lifecycleScope.launch {
+                violation.title = titleEditText.text.toString()
+                violation.isResolved = resolvedCheckBox.isChecked
+                dao.update(violation)
+                finish()
+            }
         }
     }
 }

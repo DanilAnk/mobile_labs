@@ -1,13 +1,16 @@
 package com.example.lab6
 
 
-import Violation
-import ViolationAdapter
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,31 +18,50 @@ class MainActivity : AppCompatActivity() {
     private lateinit var violationsListView: ListView
     private lateinit var addViolationButton: Button
 
+    private lateinit var dao: ViolationDao
+    private lateinit var database: AppDatabase
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: ViolationAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        violationsListView = findViewById(R.id.violations_list)
-        addViolationButton = findViewById(R.id.add_violation_button)
+        database = AppDatabase.getDatabase(this)
+        dao = database.violationDao()
 
-        val violations = mutableListOf<Violation>()
+        recyclerView = findViewById(R.id.violations_recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val adapter = ViolationAdapter(this, violations)
-        violationsListView.adapter = adapter
-
-        addViolationButton.setOnClickListener {
-            val newViolation = Violation("Новое нарушение", "22-12-2024", false)
-            violations.add(newViolation)
-            adapter.notifyDataSetChanged()
-        }
-
-        violationsListView.setOnItemClickListener { parent, view, position, id ->
+        adapter = ViolationAdapter(emptyList()) { violation ->
             val intent = Intent(this, ViolationDetailActivity::class.java).apply {
-                putExtra("violation", violations[position])
+                putExtra("violation", violation)
             }
             startActivity(intent)
         }
+
+        recyclerView.adapter = adapter
+
+        loadViolations()
+
+        findViewById<Button>(R.id.add_violation_button).setOnClickListener {
+            val newViolation = Violation(title = "Новое нарушение", date = "22-12-2024", isResolved = false)
+            lifecycleScope.launch {
+                dao.insert(newViolation)
+                loadViolations()
+            }
+        }
+
     }
+
+    private fun loadViolations() {
+        lifecycleScope.launch {
+            val violationsList = database.violationDao().getAllViolations()
+            adapter.updateData(violationsList)
+        }
+    }
+
+
 }
 
 
