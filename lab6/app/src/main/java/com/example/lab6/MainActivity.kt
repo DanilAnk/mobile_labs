@@ -3,6 +3,7 @@ package com.example.lab6
 
 import Violation
 import ViolationAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
@@ -21,11 +22,8 @@ class MainActivity : AppCompatActivity() {
         violationsListView = findViewById(R.id.violations_list)
         addViolationButton = findViewById(R.id.add_violation_button)
 
-        val violations = mutableListOf<Violation>() // Список нарушений
+        val violations = mutableListOf<Violation>()
 
-
-
-        // Адаптер для списка нарушений
         val adapter = ViolationAdapter(this, violations)
         violationsListView.adapter = adapter
 
@@ -35,6 +33,12 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         }
 
+        violationsListView.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(this, ViolationDetailActivity::class.java).apply {
+                putExtra("violation", violations[position])
+            }
+            startActivity(intent)
+        }
     }
 }
 
