@@ -2,10 +2,13 @@ package com.example.lab6
 
 
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +26,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ViolationAdapter
 
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,10 +43,17 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ViolationDetailActivity::class.java).apply {
                 putExtra("violation", violation)
             }
-            startActivity(intent)
+            activityResultLauncher.launch(intent)
         }
 
         recyclerView.adapter = adapter
+
+
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                loadViolations()
+            }
+        }
 
         loadViolations()
 
@@ -60,6 +73,8 @@ class MainActivity : AppCompatActivity() {
             adapter.updateData(violationsList)
         }
     }
+
+
 
 
 }
