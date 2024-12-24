@@ -21,6 +21,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/load_image_button"
+        android:layout_width="373dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="200dp"
+        android:text="Загрузить фотографию"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/violation_title_edit"
         android:layout_width="228dp"
@@ -32,12 +43,13 @@
         app:layout_constraintTop_toBottomOf="@+id/titleView" />
 
     <ImageView
-        android:id="@+id/violation_image"
+        android:id="@+id/violation_image_view"
         android:layout_width="129dp"
         android:layout_height="88dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="6dp"
+        android:visibility="gone"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toStartOf="@+id/violation_title_edit"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,20 +122,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="252dp"
         android:text="Details"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/violation_image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/violation_date"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/violation_image" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
