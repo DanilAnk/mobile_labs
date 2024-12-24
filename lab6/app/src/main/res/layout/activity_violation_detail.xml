@@ -21,17 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/load_image_button"
-        android:layout_width="373dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="200dp"
-        android:text="Загрузить фотографию"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/violation_title_edit"
         android:layout_width="228dp"
@@ -42,18 +31,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleView" />
 
-    <ImageView
-        android:id="@+id/violation_image_view"
-        android:layout_width="129dp"
-        android:layout_height="88dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="6dp"
-        android:visibility="gone"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toStartOf="@+id/violation_title_edit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
     <TextView
         android:id="@+id/textView3"
@@ -74,17 +51,8 @@
         android:layout_marginTop="16dp"
         android:text="Вопрос решён"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_suspect_button" />
-
-    <Button
-        android:id="@+id/select_suspect_button"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Выбрать подозреваемого"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
 
     <Button
         android:id="@+id/send_report_button"
