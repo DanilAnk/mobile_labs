@@ -32,6 +32,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
+private const val TAG = "PhotoGalleryFragment" // Тег для логирования
+private const val POLL_WORK = "POLL_WORK" // Идентификатор для работы опроса
+
 class PhotoGalleryFragment : Fragment() {
 
     private lateinit var photoGalleryViewModel: PhotoGalleryViewModel // ViewModel для управления данными галереи
