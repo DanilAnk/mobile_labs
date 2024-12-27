@@ -18,6 +18,7 @@ class ViolationDetailActivity : AppCompatActivity() {
 
     private lateinit var titleEditText: EditText
     private lateinit var dateTextView: TextView
+    private lateinit var nameTextView: TextView
     private lateinit var resolvedCheckBox: CheckBox
     private lateinit var backButton: Button
     private lateinit var deleteButton: Button
@@ -36,6 +37,7 @@ class ViolationDetailActivity : AppCompatActivity() {
 
         titleEditText = findViewById(R.id.violation_title_edit)
         dateTextView = findViewById(R.id.violation_date)
+        nameTextView = findViewById(R.id.violation_name)
         resolvedCheckBox = findViewById(R.id.resolved_checkbox)
         backButton = findViewById(R.id.back_button)
         deleteButton = findViewById(R.id.delete_button)
@@ -46,6 +48,8 @@ class ViolationDetailActivity : AppCompatActivity() {
 
         titleEditText.setText(violation.title)
         dateTextView.text = violation.date
+        nameTextView.text = violation.name
+
         resolvedCheckBox.isChecked = violation.isResolved
 /*
         // Загрузка изображения, если оно есть
@@ -81,6 +85,7 @@ class ViolationDetailActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 violation.title = titleEditText.text.toString()
                 violation.date = dateTextView.text.toString()
+                violation.name = nameTextView.text.toString()
                 violation.isResolved = resolvedCheckBox.isChecked
                 dao.update(violation)
                 setResult(Activity.RESULT_OK)

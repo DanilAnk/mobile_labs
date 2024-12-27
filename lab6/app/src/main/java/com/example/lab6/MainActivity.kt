@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         loadViolations()
 
         findViewById<Button>(R.id.add_violation_button).setOnClickListener {
-            val newViolation = Violation(title = "Новое нарушение", date = "22-12-2024", isResolved = false)
+            val newViolation = Violation(title = "Новое нарушение", date = "22-12-2024", isResolved = false, name = "noName")
             lifecycleScope.launch {
                 dao.insert(newViolation)
                 loadViolations()

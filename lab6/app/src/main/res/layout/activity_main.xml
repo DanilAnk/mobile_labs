@@ -12,14 +12,13 @@
         android:id="@+id/app_title"
         android:layout_width="192dp"
         android:layout_height="38dp"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="2dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="22dp"
         android:text="Учёт нарушений"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/add_violation_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/add_violation_button" />
 
     <Button
         android:id="@+id/add_violation_button"
@@ -27,10 +26,8 @@
         android:layout_height="38dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="2dp"
-        android:text="Добавить нарушение"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginEnd="5dp"
+        android:text="Добавить нарушение" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/violations_recycler_view"
