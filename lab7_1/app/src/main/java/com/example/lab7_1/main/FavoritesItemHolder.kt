@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lab7_1.FavoritesActivity
 import com.example.lab7_1.GalleryItem
 import com.example.lab7_1.R
 import com.example.lab7_1.Tag
@@ -36,7 +35,7 @@ class FavoritesItemHolder(itemView: View, private val context: Context, private 
         Picasso.get()  // Используем библиотеку Picasso для загрузки изображения
 //            .load(galleryItem.url)  // Загружаем изображение по URL из объекта GalleryItem
             .load(galleryItem.url)  // Загружаем изображение по URL из объекта GalleryItem
-            .placeholder(R.drawable.bill_up_close)  // Устанавливаем изображение-заполнитель во время загрузки
+//            .placeholder(R.drawable.bill_up_close_)  // Устанавливаем изображение-заполнитель во время загрузки
             .into(imageViewThumbnail)  // Загружаем изображение в ImageView
 
         // Получение тегов и установка их в текстовое поле

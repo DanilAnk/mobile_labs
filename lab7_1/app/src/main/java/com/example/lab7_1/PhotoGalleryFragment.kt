@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar // Импортируем ProgressBar для индикатора загрузки
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
@@ -167,12 +168,26 @@ class PhotoGalleryFragment : Fragment() {
         }
     }
 
-    private class PhotoHolder(private val itemImageView: ImageView) : RecyclerView.ViewHolder(itemImageView) {
+//    private class PhotoHolder(private val itemImageView: ImageView) : RecyclerView.ViewHolder(itemImageView) {
+//        fun bindGalleryItem(galleryItem: GalleryItem) {
+//            Picasso.get()  // Используем библиотеку Picasso для загрузки изображения
+//                .load(galleryItem.url)  // Загружаем изображение по URL из объекта GalleryItem
+////                .placeholder(R.drawable.bill_up_close_)  // Устанавливаем изображение-заполнитель во время загрузки
+//                .into(itemImageView)  // Загружаем изображение в ImageView
+//        }
+//    }
+
+    private class PhotoHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val itemImageView: ImageView = itemView.findViewById(R.id.imageView)
+        private val dateTextView: TextView = itemView.findViewById(R.id.dateTextView)
+
         fun bindGalleryItem(galleryItem: GalleryItem) {
-            Picasso.get()  // Используем библиотеку Picasso для загрузки изображения
-                .load(galleryItem.url)  // Загружаем изображение по URL из объекта GalleryItem
-                .placeholder(R.drawable.bill_up_close)  // Устанавливаем изображение-заполнитель во время загрузки
-                .into(itemImageView)  // Загружаем изображение в ImageView
+            Picasso.get()
+                .load(galleryItem.url)
+                .into(itemImageView)
+
+            // Assuming galleryItem has a date property
+            dateTextView.text = galleryItem.dateTaken // Set the date text here
         }
     }
 
