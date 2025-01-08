@@ -22,11 +22,17 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
     }
 
     fun getTasks() {
+//        viewModelScope.launch {
+//            val tasksList = taskDao.getAllTasks()
+//            _tasks.postValue(tasksList) // Обновляем LiveData с новым списком задач
+//        }
+
         viewModelScope.launch {
-            val tasksList = taskDao.getAllTasks()
-            _tasks.postValue(tasksList) // Обновляем LiveData с новым списком задач
+            val sortedTasks = taskDao.getAllTasks().sortedBy { it.priority } // Сортируем по приоритету
+            _tasks.postValue(sortedTasks)
         }
     }
+
 
     fun deleteTask(task: Task) {
         viewModelScope.launch {
