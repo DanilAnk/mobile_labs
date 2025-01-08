@@ -3,6 +3,7 @@ package com.example.lab8.ui
 import TaskAdapter
 import TaskViewModel
 import TaskViewModelFactory
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.lab8.R
+import com.example.lab8.TaskFormActivity
 import com.example.lab8.db.TaskDatabase
 import com.example.lab8.model.Priority
 import com.example.lab8.model.Task
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
@@ -44,7 +47,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         }
 
         // Пример добавления задачи (можно убрать или изменить по необходимости)
-        taskViewModel.addTask(content = "Сделать домашнее задание", priority = Priority.MEDIUM.level)
+//        taskViewModel.addTask(content = "Сделать домашнее задание", priority = Priority.MEDIUM.level)
+
+        taskViewModel.getTasks()
 
         // Добавление функциональности свайпа для удаления элементов
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -63,6 +68,22 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        // Обработка нажатия на FloatingActionButton (FAB)
+        val fab: FloatingActionButton = view.findViewById(R.id.fab)
+        fab.setOnClickListener {
+            // Здесь можно открыть диалоговое окно или активность для добавления новой задачи.
+            // Например, просто добавим новую задачу с фиксированным содержимым:
+//            taskViewModel.addTask(content = "Новая задача", priority = Priority.MEDIUM.level)
+            val intent = Intent(requireContext(), TaskFormActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Обновляем список задач при возвращении к активности
+        taskViewModel.getTasks() // Метод для получения задач из базы данных
     }
 
     companion object {
